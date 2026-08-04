@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>打包发货清单 | Delivery Packing Log</title>
+
+  <!-- Critical Resource Preconnects for Ultra-Fast Font Load -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@600;800;900&family=Plus+Jakarta+Sans:wght@700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Critical Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- Deferred Application Script (Non-blocking) -->
+  <script src="app.js" defer></script>
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Top Header: Dedicated Big Date Section + Right Corner Settings Button -->
+    <header class="main-header-bar">
+      <!-- Dedicated Date Card -->
+      <section class="neo-card big-date-card">
+        <div class="date-header-title">🗓️ 打包日期 (Packing Date)</div>
+        <div class="date-controls-row">
+          <button class="neo-btn sm btn-yellow flex-btn" onclick="changeDate(-1)">◄ 前一天</button>
+          <input type="date" id="packing-date" class="neo-input date-input-large" onchange="onDateChanged()">
+          <button class="neo-btn sm btn-yellow flex-btn" onclick="changeDate(1)">后一天 ►</button>
+        </div>
+      </section>
+
+      <!-- Top Right Corner Settings Icon Button -->
+      <button class="settings-menu-btn" onclick="toggleSettingsModal()" title="设置菜单">
+        ⚙️
+      </button>
+    </header>
+
+    <!-- MAIN VIEW: Active Packing Sheet -->
+    <main id="view-active" class="view-panel active">
+      <!-- Category 1: Main Items (常用项目 - Direct Access Cards) -->
+      <section class="section-container">
+        <div class="section-title main-title">
+          <span class="title-icon">🔥</span> 常用类
+        </div>
+
+        <div id="main-items-grid" class="items-grid">
+          <!-- Main items generated dynamically by JS -->
+        </div>
+      </section>
+
+      <!-- Category 2: Outside (不常用菜单 1) -->
+      <section class="section-container">
+        <details class="neo-details" id="outside-details">
+          <summary class="neo-summary btn-cyan">
+            <div class="summary-title-wrapper">
+              <span class="summary-icon">📦</span>
+              <span>Outside (不常用项目)</span>
+              <span class="dropdown-arrow">▼</span>
+            </div>
+            <span class="badge badge-black" id="outside-active-badge">0</span>
+          </summary>
+          <div class="dropdown-content-inner">
+            <p class="dropdown-hint">点击展开点数 (Click item to enter numbers):</p>
+            <div id="outside-items-grid" class="items-grid">
+              <!-- Outside items generated dynamically -->
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <!-- Category 3: Additional (不常用菜单 2) -->
+      <section class="section-container">
+        <details class="neo-details" id="additional-details">
+          <summary class="neo-summary btn-purple">
+            <div class="summary-title-wrapper">
+              <span class="summary-icon">✨</span>
+              <span>Additional (附加不常用)</span>
+              <span class="dropdown-arrow">▼</span>
+            </div>
+            <span class="badge badge-black" id="additional-active-badge">0</span>
+          </summary>
+          <div class="dropdown-content-inner">
+            <p class="dropdown-hint">点击展开点数 (Click item to enter numbers):</p>
+            <div id="additional-items-grid" class="items-grid">
+              <!-- Additional items generated dynamically -->
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <!-- Category 4: Add Custom Item (添加临时自定义项目) -->
+      <section class="neo-card custom-item-card">
+        <div class="card-header-label">➕ 临时添加其他物品 (Add Custom Item)</div>
+        <div class="custom-input-group">
+          <input type="text" id="custom-item-name" class="neo-input" placeholder="输入物品名称 (例如: 蟹棒)" autocomplete="off">
+          <button class="neo-btn btn-yellow" onclick="addCustomItem()">添加</button>
+        </div>
+        <div id="custom-items-grid" class="items-grid margin-top-sm">
+          <!-- Dynamic custom items rendered here -->
+        </div>
+      </section>
+    </main>
+
+    <!-- HISTORY VIEW: Logged Records by Date -->
+    <main id="view-history" class="view-panel">
+      <section class="neo-card">
+        <div class="card-header-label">📜 历史打包发货日志 (Date History)</div>
+        <div class="history-search-row margin-top-sm">
+          <input type="date" id="history-filter-date" class="neo-input flex-1" onchange="filterHistoryByDate()">
+          <button class="neo-btn sm btn-yellow" onclick="resetHistoryFilter()">显示全部</button>
+        </div>
+      </section>
+
+      <div id="history-list-container" class="history-list">
+        <!-- History cards rendered here -->
+      </div>
+
+      <!-- BIG CLEAR GO BACK BUTTON AT THE BOTTOM OF HISTORY VIEW -->
+      <div class="history-bottom-bar">
+        <button class="neo-btn btn-cyan big-back-btn" onclick="switchTab('active')">
+          ⬅️ 返回打包记数 (Back to Packing)
+        </button>
+      </div>
+    </main>
+
+    <!-- Pop-up Settings & Actions Modal Menu -->
+    <div id="settings-modal" class="neo-modal-backdrop" onclick="closeSettingsModalOnBackdrop(event)">
+      <div class="neo-modal-content">
+        <div class="modal-header">
+          <h3>⚙️ 菜单与快捷功能</h3>
+          <button class="modal-close-btn" onclick="toggleSettingsModal()">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <button class="modal-menu-item btn-green" onclick="copyWhatsAppSummary(); toggleSettingsModal();">
+            <span class="menu-icon">📋</span>
+            <div class="menu-text">
+              <strong>复制 WhatsApp/文字清单</strong>
+              <small>一键复制当日打包发货文本</small>
+            </div>
+          </button>
+
+          <button class="modal-menu-item btn-cyan" onclick="switchTab('history'); toggleSettingsModal();">
+            <span class="menu-icon">📜</span>
+            <div class="menu-text">
+              <strong>查看历史发货日志 (<span id="modal-history-count">0</span>)</strong>
+              <small>查看与编辑过往打包记录</small>
+            </div>
+          </button>
+
+          <button class="modal-menu-item btn-yellow" onclick="setTodayDate(); toggleSettingsModal();">
+            <span class="menu-icon">📌</span>
+            <div class="menu-text">
+              <strong>跳转到今天</strong>
+              <small>快捷切回今天打包记数页</small>
+            </div>
+          </button>
+
+          <button class="modal-menu-item btn-pink" onclick="clearCurrentCounts(); toggleSettingsModal();">
+            <span class="menu-icon">🗑️</span>
+            <div class="menu-text">
+              <strong>清空当前日期点数</strong>
+              <small>重置当前选定日期的已填数量</small>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification Overlay -->
+    <div id="toast" class="neo-toast"></div>
+  </div>
+</body>
+
+</html>
