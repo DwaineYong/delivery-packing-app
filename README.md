@@ -7,7 +7,9 @@ A high-speed, mobile-first web application designed for logging packaged grocery
 ![Neobrutalism UI](https://img.shields.io/badge/Design-Neobrutalism-FFE600?style=for-the-badge&logoColor=black)
 ![Status](https://img.shields.io/badge/Status-Active-5DE2E7?style=for-the-badge)
 
-<img width="800" height="450" alt="brag-ezgif com-video-to-gif-converter (1)" src="https://github.com/user-attachments/assets/7d80c529-2b6e-4798-9312-759e68123004" />
+<p align="center">
+  <img width="800" height="450" alt="brag-ezgif com-video-to-gif-converter (1)" src="https://github.com/user-attachments/assets/7d80c529-2b6e-4798-9312-759e68123004" />
+</p>
 
 ---
 
