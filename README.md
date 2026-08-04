@@ -3,7 +3,6 @@
 A high-speed, mobile-first web application designed for logging packaged grocery/meat items for delivery by date. Built with a vibrant **Neobrutalism UI** design, offline local storage persistence, and one-tap WhatsApp summary generation.
 
 ![Neobrutalism UI](https://img.shields.io/badge/Design-Neobrutalism-FFE600?style=for-the-badge&logoColor=black)
-![License](https://img.shields.io/badge/License-MIT-00E5A3?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Active-5DE2E7?style=for-the-badge)
 
 ---
