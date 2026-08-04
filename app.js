@@ -1,4 +1,13 @@
-// Neobrutalism Mobile Delivery Packing App JS - Touch Swipe & Native Back Gesture Support
+// Neobrutalism Mobile Delivery Packing App JS - Web Performance Optimized & PWA Offline Enabled
+
+// Register Service Worker for 0ms Instant Cache Loading
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => {
+      console.log('Service Worker registration skipped:', err);
+    });
+  });
+}
 
 // 1. Initial Preset Items Definition with Cute Emojis
 const INITIAL_ITEMS = [
@@ -81,7 +90,7 @@ function updateModalHistoryCount() {
 function updateLastActiveTime() {
   try {
     localStorage.setItem(STORAGE_LAST_ACTIVE_KEY, Date.now().toString());
-  } catch (e) { }
+  } catch (e) {}
 }
 
 // Auto-archive check if exit duration > 1 hour
@@ -134,7 +143,7 @@ function checkInactivityAutoArchive() {
 // Touch Swipe & Native Popstate Navigation
 function initSwipeAndPopstateNavigation() {
   const historyPanel = document.getElementById('view-history');
-
+  
   // 1. Touch Swipe Gesture (Left to Right Swipe on History view)
   if (historyPanel) {
     historyPanel.addEventListener('touchstart', (e) => {
@@ -145,7 +154,7 @@ function initSwipeAndPopstateNavigation() {
     historyPanel.addEventListener('touchend', (e) => {
       const touchEndX = e.changedTouches[0].screenX;
       const touchEndY = e.changedTouches[0].screenY;
-
+      
       const deltaX = touchEndX - touchStartX;
       const deltaY = Math.abs(touchEndY - touchStartY);
 
@@ -262,7 +271,7 @@ function setItemQuantity(itemId, val) {
 
   saveToLocalStorage();
   updateLastActiveTime();
-
+  
   // Use requestAnimationFrame for 60-120 FPS UI updates
   requestAnimationFrame(() => {
     updateItemCardUI(itemId, numVal);
@@ -344,7 +353,7 @@ function createItemCardHTML(item, count, isCustom = false) {
 function updateItemCardUI(itemId, newCount) {
   const card = document.getElementById(`card-${itemId}`);
   const input = document.getElementById(`input-${itemId}`);
-
+  
   if (input && input.value !== String(newCount || '')) {
     input.value = newCount || '';
   }
