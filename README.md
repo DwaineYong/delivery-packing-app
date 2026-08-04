@@ -49,9 +49,6 @@ Simply open `index.html` in any web browser:
 # Or start a local server
 python -m http.server 8080
 ```
-## <img width="480" height="270" alt="ShowcaseGIFbySydneyPole" src="https://github.com/user-attachments/assets/d6f269ab-e999-47d6-88ea-7c33f4d3f448" /> 
-
-https://github.com/user-attachments/assets/0bf6ed02-43b2-44e3-9a85-0d802a12ef61
 
 
 
