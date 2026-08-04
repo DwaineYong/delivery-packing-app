@@ -1,4 +1,4 @@
-<img width="2133" height="2133" alt="logo" src="https://github.com/user-attachments/assets/89bafcc3-af9b-4e9e-8aea-2f9e56266390" />
+<img width="1024" height="1024" alt="logo" src="https://github.com/user-attachments/assets/89bafcc3-af9b-4e9e-8aea-2f9e56266390" />
 A high-speed, mobile-first web application designed for logging packaged grocery/meat items for delivery by date. Built with a vibrant **Neobrutalism UI** design, offline local storage persistence, and one-tap WhatsApp summary generation.
 
 ![Neobrutalism UI](https://img.shields.io/badge/Design-Neobrutalism-FFE600?style=for-the-badge&logoColor=black)
@@ -46,3 +46,9 @@ Simply open `index.html` in any web browser:
 # Or start a local server
 python -m http.server 8080
 ```
+## <img width="480" height="270" alt="ShowcaseGIFbySydneyPole" src="https://github.com/user-attachments/assets/d6f269ab-e999-47d6-88ea-7c33f4d3f448" /> 
+
+https://github.com/user-attachments/assets/0bf6ed02-43b2-44e3-9a85-0d802a12ef61
+
+
+
