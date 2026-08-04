@@ -4,7 +4,6 @@ A high-speed, mobile-first web application designed for logging packaged grocery
 
 ![Neobrutalism UI](https://img.shields.io/badge/Design-Neobrutalism-FFE600?style=for-the-badge&logoColor=black)
 ![Status](https://img.shields.io/badge/Status-Active-5DE2E7?style=for-the-badge)
-![Privacy](https://img.shields.io/badge/Privacy-Private%20%26%20Proprietary-FF577F?style=for-the-badge)
 
 ---
 
@@ -54,9 +53,3 @@ python -m http.server 8080
 2. Set **Branch** to `main` and click **Save**.
 3. Your app will be live at:
    `https://DwaineYong.github.io/delivery-packing-app/`
-
----
-
-## 🔒 Copyright & Rights
-
-Copyright © 2026 DwaineYong. All Rights Reserved. Private & Proprietary.
