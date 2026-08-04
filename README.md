@@ -56,7 +56,3 @@ python -m http.server 8080
    `https://DwaineYong.github.io/delivery-packing-app/`
 
 ---
-
-## 📄 License
-
-MIT License - feel free to customize and use!
