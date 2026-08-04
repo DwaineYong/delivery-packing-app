@@ -1,4 +1,4 @@
-<img align=center width="128" height="128" alt="logo" src="https://github.com/user-attachments/assets/89bafcc3-af9b-4e9e-8aea-2f9e56266390" />
+<img align="center" width="128" height="128" alt="logo" src="https://github.com/user-attachments/assets/89bafcc3-af9b-4e9e-8aea-2f9e56266390" />
 
 A high-speed, mobile-first web application designed for logging packaged grocery/meat items for delivery by date. Built with a vibrant **Neobrutalism UI** design, offline local storage persistence, and one-tap WhatsApp summary generation.
 
