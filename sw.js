@@ -1,12 +1,12 @@
 // Service Worker for 0ms Instant Loading & Offline PWA Capabilities
-const CACHE_NAME = 'packing-app-cache-v1';
+const CACHE_NAME = 'packing-app-cache-v2';
 const ASSETS = [
   './',
   './index.html',
   './styles.css',
   './app.js',
   './manifest.json',
-  './FreeVector-Box-Logo.jpg'
+  './logo.jpg'
 ];
 
 self.addEventListener('install', (evt) => {
