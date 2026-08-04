@@ -1,5 +1,3 @@
-# 📦 Delivery Packing Log App (发货打包记数系统)
-
 A high-speed, mobile-first web application designed for logging packaged grocery/meat items for delivery by date. Built with a vibrant **Neobrutalism UI** design, offline local storage persistence, and one-tap WhatsApp summary generation.
 
 ![Neobrutalism UI](https://img.shields.io/badge/Design-Neobrutalism-FFE600?style=for-the-badge&logoColor=black)
@@ -47,9 +45,3 @@ Simply open `index.html` in any web browser:
 # Or start a local server
 python -m http.server 8080
 ```
-
-### GitHub Pages Setup
-1. Go to repository **Settings** -> **Pages**.
-2. Set **Branch** to `main` and click **Save**.
-3. Your app will be live at:
-   `https://DwaineYong.github.io/delivery-packing-app/`
