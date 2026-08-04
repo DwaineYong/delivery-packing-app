@@ -1,0 +1,17 @@
+{
+  "name": "打包发货记数系统",
+  "short_name": "打包记数",
+  "description": "Delivery Packing Log Web Application",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FFF6E9",
+  "theme_color": "#FFF6E9",
+  "icons": [
+    {
+      "src": "FreeVector-Box-Logo.jpg",
+      "sizes": "192x192 512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
