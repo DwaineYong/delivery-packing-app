@@ -17,7 +17,7 @@ A high-speed, mobile-first web application designed for logging packaged grocery
 
 - **📱 Mobile Keypad Optimized**: Input fields automatically trigger the numeric keypad (`inputmode="numeric"`, `pattern="[0-9]*"`) for rapid entry.
 - **💾 LocalStorage Offline Persistence**: Automatically saves your item counts on every keystroke. Works 100% offline without needing a backend server.
-- **⏳ 1-Hour Exit Inactivity Auto-Archive**: If you leave or exit the app for more than 1 hour (3,600,000 ms), previous counts are automatically archived into **📜 Date History** and the active screen resets to `0`.
+- **📅 Smart Day-Based Reset**: Opens on today's date every time — data persists all day so you can edit freely. The next calendar day starts fresh automatically. Past dates stay accessible in History.
 - **📋 One-Tap WhatsApp Summary**: Generates a formatted text summary (`• 猪ham: 5 包...`) ready to paste directly into WhatsApp delivery groups.
 - **📱 Touch Swipe & Mobile Gestures**: Swipe from left-to-right on the History page or use native phone back gestures to return instantly to the packing sheet.
 - **🎨 High-Craft Neobrutalism UI**: High-contrast borders, bold typography, pop shadows, and micro-animations for 60–120 FPS performance.
@@ -27,12 +27,12 @@ A high-speed, mobile-first web application designed for logging packaged grocery
 ## 🥩 Item Catalog Overview
 
 - **🔥 常用类 (Main Items)**:
-  - 🐷 猪ham, 🐔 鸡ham, 🌭 猪hotdog, 🥓 Bacon (大 / 小 / 圆 🐽), 🐟 鱼扒, 🍡 福州圆, 🦀 hailao
+  - 🐷 猪ham, 🐔 鸡ham, 🌭 猪hotdog, 🥓 Bacon (大 / 小 / 圆), 🐟 鱼扒, 🍡 福州圆, 🦀 Hailao
 - **📦 Outside (不常用项目 1)**:
-  - 🥢 腐竹卷, 🍥 长鱼饼, 🧆 taofupok
+  - 🥢 腐竹卷, 🍥 长鱼饼, 🧆 TaofuPok
 - **✨ Additional (附加不常用 2)**:
   - 🦪 鲍鱼片, 🧀 Cheese Hotdog
-- **➕ Custom Items**:
+- **➕ Custom Items** (inside Additional tab):
   - Dynamically add temporary custom item cards on demand.
 
 ---
