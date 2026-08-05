@@ -15,17 +15,17 @@ const INITIAL_ITEMS = [
   { id: 'zhu_ham', name: '🐷 猪ham', category: 'main' },
   { id: 'ji_ham', name: '🐔 鸡ham', category: 'main' },
   { id: 'zhu_hotdog', name: '🌭 猪hotdog', category: 'main' },
-  { id: 'bacon_large', name: '🥓 Bacon 大 🐽', category: 'main' },
-  { id: 'bacon_small', name: '🥓 Bacon 小 🐽', category: 'main' },
-  { id: 'bacon_round', name: '🥓 Bacon 圆 🐽', category: 'main' },
+  { id: 'bacon_large', name: '🥓 Bacon 大', category: 'main' },
+  { id: 'bacon_small', name: '🥓 Bacon 小', category: 'main' },
+  { id: 'bacon_round', name: '🥓 Bacon 圆', category: 'main' },
   { id: 'fish_fillet', name: '🐟 鱼扒', category: 'main' },
   { id: 'fuzhou_ball', name: '🍡 福州圆', category: 'main' },
-  { id: 'hailao', name: '🦀 hailao', category: 'main' },
+  { id: 'hailao', name: '🦀 Hailao', category: 'main' },
 
   // Outside (不常用菜单 1)
   { id: 'fuzhu_juan', name: '🥢 腐竹卷', category: 'outside' },
   { id: 'chang_yubing', name: '🍥 长鱼饼', category: 'outside' },
-  { id: 'taofupok', name: '🧆 taofupok', category: 'outside' },
+  { id: 'taofupok', name: '🧆 TaofuPok', category: 'outside' },
 
   // Additional (不常用菜单 2)
   { id: 'baoyu_pian', name: '🦪 鲍鱼片', category: 'additional' },
@@ -42,8 +42,6 @@ let state = {
 // LocalStorage Keys
 const STORAGE_RECORDS_KEY = 'packing_delivery_records_v1';
 const STORAGE_CUSTOM_KEY = 'packing_delivery_custom_v1';
-const STORAGE_LAST_ACTIVE_KEY = 'packing_last_active_time_v1';
-const ONE_HOUR_MS = 60 * 60 * 1000; // 1 hour in ms (3,600,000 ms)
 
 // Touch Swipe Detection Variables
 let touchStartX = 0;
@@ -52,7 +50,6 @@ let touchStartY = 0;
 // DOM Ready Initialization
 document.addEventListener('DOMContentLoaded', () => {
   loadFromLocalStorage();
-  checkInactivityAutoArchive();
   initDatePicker();
   renderAllItemGrids();
   updateSummaryAndBadges();
@@ -86,64 +83,17 @@ function updateModalHistoryCount() {
   if (countEl) countEl.innerText = dateKeys.length;
 }
 
-// Update & Track Last Active Timestamp
-function updateLastActiveTime() {
-  try {
-    localStorage.setItem(STORAGE_LAST_ACTIVE_KEY, Date.now().toString());
-  } catch (e) {}
-}
-
-// Auto-archive check if exit duration > 1 hour
-function checkInactivityAutoArchive() {
-  try {
-    const lastActiveStr = localStorage.getItem(STORAGE_LAST_ACTIVE_KEY);
-    const now = Date.now();
-
-    if (lastActiveStr) {
-      const lastActive = parseInt(lastActiveStr, 10);
-      const elapsed = now - lastActive;
-
-      // If user exited / was inactive for more than 1 hour
-      if (elapsed >= ONE_HOUR_MS) {
-        const counts = getCurrentDateCounts();
-        const hasNumbers = Object.values(counts).some(v => v > 0);
-
-        if (hasNumbers) {
-          state.records[state.currentDate] = {};
-          saveToLocalStorage();
-          setTimeout(() => {
-            showToast('⌛ 离开超1小时：上期数额已归档至【历史记录】，当页已自动清空。');
-          }, 300);
-        }
-      }
-    }
-  } catch (e) {
-    console.error('Error checking inactivity timeout:', e);
-  }
-
-  updateLastActiveTime();
-}
-
-// Lifecycle listeners to preserve numbers & update active timestamps
-['visibilitychange', 'beforeunload', 'pagehide', 'touchstart', 'click', 'input'].forEach(evt => {
+// Auto-save on page hide / exit so data is never lost
+['visibilitychange', 'beforeunload', 'pagehide'].forEach(evt => {
   window.addEventListener(evt, () => {
-    if (evt === 'visibilitychange') {
-      if (document.visibilityState === 'visible') {
-        checkInactivityAutoArchive();
-      } else {
-        updateLastActiveTime();
-        saveToLocalStorage();
-      }
-    } else {
-      updateLastActiveTime();
-    }
+    saveToLocalStorage();
   }, { passive: true });
 });
 
 // Touch Swipe & Native Popstate Navigation
 function initSwipeAndPopstateNavigation() {
   const historyPanel = document.getElementById('view-history');
-  
+
   // 1. Touch Swipe Gesture (Left to Right Swipe on History view)
   if (historyPanel) {
     historyPanel.addEventListener('touchstart', (e) => {
@@ -154,7 +104,7 @@ function initSwipeAndPopstateNavigation() {
     historyPanel.addEventListener('touchend', (e) => {
       const touchEndX = e.changedTouches[0].screenX;
       const touchEndY = e.changedTouches[0].screenY;
-      
+
       const deltaX = touchEndX - touchStartX;
       const deltaY = Math.abs(touchEndY - touchStartY);
 
@@ -210,15 +160,25 @@ function saveToLocalStorage() {
 }
 
 // Date Picker Handling
+function updateDateDisplay(dateStr) {
+  const parts = dateStr.split('-');
+  const el_md = document.getElementById('date-display-md');
+  const el_full = document.getElementById('date-display-full');
+  if (el_md) el_md.textContent = `${parts[1]}/${parts[2]}`;
+  if (el_full) el_full.textContent = dateStr;
+}
+
 function initDatePicker() {
   const dateInput = document.getElementById('packing-date');
   if (dateInput) dateInput.value = state.currentDate;
+  updateDateDisplay(state.currentDate);
 }
 
 function onDateChanged() {
   const dateInput = document.getElementById('packing-date');
   if (dateInput && dateInput.value) {
     state.currentDate = dateInput.value;
+    updateDateDisplay(state.currentDate);
     renderAllItemGrids();
     updateSummaryAndBadges();
   }
@@ -236,6 +196,7 @@ function changeDate(offsetDays) {
 
   const dateInput = document.getElementById('packing-date');
   if (dateInput) dateInput.value = state.currentDate;
+  updateDateDisplay(state.currentDate);
 
   renderAllItemGrids();
   updateSummaryAndBadges();
@@ -245,6 +206,7 @@ function setTodayDate() {
   state.currentDate = getTodayString();
   const dateInput = document.getElementById('packing-date');
   if (dateInput) dateInput.value = state.currentDate;
+  updateDateDisplay(state.currentDate);
   renderAllItemGrids();
   updateSummaryAndBadges();
   showToast('已跳转到今天 Date: ' + state.currentDate);
@@ -270,8 +232,7 @@ function setItemQuantity(itemId, val) {
   }
 
   saveToLocalStorage();
-  updateLastActiveTime();
-  
+
   // Use requestAnimationFrame for 60-120 FPS UI updates
   requestAnimationFrame(() => {
     updateItemCardUI(itemId, numVal);
@@ -306,15 +267,19 @@ function renderAllItemGrids() {
   const counts = getCurrentDateCounts();
   const allItems = getAllItemsList();
 
-  const mainItems = allItems.filter(i => i.category === 'main');
-  const outsideItems = allItems.filter(i => i.category === 'outside');
-  const additionalItems = allItems.filter(i => i.category === 'additional');
-  const customItems = allItems.filter(i => i.category === 'custom');
+  // Single-pass grouping instead of 4 separate filter() calls
+  const groups = { main: [], outside: [], additional: [], custom: [] };
+  allItems.forEach(item => {
+    if (groups[item.category]) groups[item.category].push(item);
+  });
 
-  document.getElementById('main-items-grid').innerHTML = mainItems.map(item => createItemCardHTML(item, counts[item.id] || 0)).join('');
-  document.getElementById('outside-items-grid').innerHTML = outsideItems.map(item => createItemCardHTML(item, counts[item.id] || 0)).join('');
-  document.getElementById('additional-items-grid').innerHTML = additionalItems.map(item => createItemCardHTML(item, counts[item.id] || 0)).join('');
-  document.getElementById('custom-items-grid').innerHTML = customItems.map(item => createItemCardHTML(item, counts[item.id] || 0, true)).join('');
+  const toHTML = (items, isCustom = false) =>
+    items.map(item => createItemCardHTML(item, counts[item.id] || 0, isCustom)).join('');
+
+  document.getElementById('main-items-grid').innerHTML       = toHTML(groups.main);
+  document.getElementById('outside-items-grid').innerHTML    = toHTML(groups.outside);
+  document.getElementById('additional-items-grid').innerHTML = toHTML(groups.additional);
+  document.getElementById('custom-items-grid').innerHTML     = toHTML(groups.custom, true);
 }
 
 function createItemCardHTML(item, count, isCustom = false) {
@@ -353,7 +318,7 @@ function createItemCardHTML(item, count, isCustom = false) {
 function updateItemCardUI(itemId, newCount) {
   const card = document.getElementById(`card-${itemId}`);
   const input = document.getElementById(`input-${itemId}`);
-  
+
   if (input && input.value !== String(newCount || '')) {
     input.value = newCount || '';
   }
@@ -395,7 +360,7 @@ function updateSummaryAndBadges() {
     const qty = counts[item.id] || 0;
     if (qty > 0) {
       if (item.category === 'outside') outsideCount += qty;
-      if (item.category === 'additional') additionalCount += qty;
+      if (item.category === 'additional' || item.category === 'custom') additionalCount += qty;
     }
   });
 
@@ -425,6 +390,7 @@ function addCustomItem() {
   input.value = '';
 
   renderAllItemGrids();
+  updateSummaryAndBadges();
   showToast(`已添加自定义项目: ${name}`);
 }
 
@@ -586,6 +552,7 @@ function jumpToDate(dateStr) {
   state.currentDate = dateStr;
   const dateInput = document.getElementById('packing-date');
   if (dateInput) dateInput.value = dateStr;
+  updateDateDisplay(dateStr);
   switchTab('active');
   renderAllItemGrids();
   updateSummaryAndBadges();

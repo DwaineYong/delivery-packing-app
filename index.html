@@ -9,7 +9,6 @@
   <!-- Mobile App Home Screen Icons (iOS Apple Touch Icon & Favicon) -->
   <link rel="apple-touch-icon" sizes="180x180" href="logo.jpg">
   <link rel="icon" type="image/jpeg" href="logo.jpg">
-  <link rel="shortcut icon" href="logo.jpg">
   
   <!-- Web App Manifest for Android & Chrome Add to Home Screen -->
   <link rel="manifest" href="manifest.json">
@@ -38,9 +37,16 @@
       <section class="neo-card big-date-card">
         <div class="date-header-title">🗓️ 打包日期 (Packing Date)</div>
         <div class="date-controls-row">
-          <button class="neo-btn sm btn-yellow flex-btn" onclick="changeDate(-1)">◄ 前一天</button>
-          <input type="date" id="packing-date" class="neo-input date-input-large" onchange="onDateChanged()">
-          <button class="neo-btn sm btn-yellow flex-btn" onclick="changeDate(1)">后一天 ►</button>
+          <button class="neo-btn sm btn-yellow flex-btn" onclick="changeDate(-1)">◄<span class="btn-date-label"> 前一天</span></button>
+          <div class="date-picker-wrapper">
+            <input type="date" id="packing-date" class="date-input-hidden" onchange="onDateChanged()">
+            <button class="neo-btn date-display-btn" id="date-display-btn" onclick="document.getElementById('packing-date').showPicker()" type="button">
+              <span class="date-display-md" id="date-display-md"></span>
+              <span class="date-display-full" id="date-display-full"></span>
+              <span class="date-cal-icon">📅</span>
+            </button>
+          </div>
+          <button class="neo-btn sm btn-yellow flex-btn" onclick="changeDate(1)"><span class="btn-date-label">后一天 </span>►</button>
         </div>
       </section>
 
@@ -99,20 +105,20 @@
             <div id="additional-items-grid" class="items-grid">
               <!-- Additional items generated dynamically -->
             </div>
+
+            <!-- Add Custom Item (添加临时自定义项目) -->
+            <div class="neo-card custom-item-card margin-top-sm">
+              <div class="card-header-label">➕ 临时添加其他物品 (Add Custom Item)</div>
+              <div class="custom-input-group">
+                <input type="text" id="custom-item-name" class="neo-input" placeholder="输入物品名称 (例如: 蟹棒)" autocomplete="off">
+                <button class="neo-btn btn-yellow" onclick="addCustomItem()">添加</button>
+              </div>
+              <div id="custom-items-grid" class="items-grid margin-top-sm">
+                <!-- Dynamic custom items rendered here -->
+              </div>
+            </div>
           </div>
         </details>
-      </section>
-
-      <!-- Category 4: Add Custom Item (添加临时自定义项目) -->
-      <section class="neo-card custom-item-card">
-        <div class="card-header-label">➕ 临时添加其他物品 (Add Custom Item)</div>
-        <div class="custom-input-group">
-          <input type="text" id="custom-item-name" class="neo-input" placeholder="输入物品名称 (例如: 蟹棒)" autocomplete="off">
-          <button class="neo-btn btn-yellow" onclick="addCustomItem()">添加</button>
-        </div>
-        <div id="custom-items-grid" class="items-grid margin-top-sm">
-          <!-- Dynamic custom items rendered here -->
-        </div>
       </section>
     </main>
 

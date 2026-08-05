@@ -1,5 +1,6 @@
-// Service Worker for 0ms Instant Loading & Offline PWA Capabilities
-const CACHE_NAME = 'packing-app-cache-v2';
+// Service Worker for PWA Offline Capabilities
+// Strategy: Network-first (always tries fresh from server, falls back to cache if offline)
+const CACHE_NAME = 'packing-app-cache-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -34,14 +35,21 @@ self.addEventListener('activate', (evt) => {
 });
 
 self.addEventListener('fetch', (evt) => {
-  // Cache-first strategy for instant loading
+  // Network-first strategy: always try to get fresh files from server.
+  // Falls back to cache only when offline.
   evt.respondWith(
-    caches.match(evt.request).then((cachedRes) => {
-      return cachedRes || fetch(evt.request).then((networkRes) => {
+    fetch(evt.request)
+      .then((networkRes) => {
+        // Update the cache with the fresh response
+        const cloned = networkRes.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(evt.request, cloned));
         return networkRes;
-      });
-    }).catch(() => {
-      return caches.match('./index.html');
-    })
+      })
+      .catch(() => {
+        // Offline fallback: serve from cache
+        return caches.match(evt.request).then((cached) => {
+          return cached || caches.match('./index.html');
+        });
+      })
   );
 });
